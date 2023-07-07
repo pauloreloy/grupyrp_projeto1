@@ -9,7 +9,9 @@ def detectFace(image):
 
   #Lendo a imagem
   #img = cv2.imread(image)
-  img_np = cv2.imdecode(image, cv2.CV_LOAD_IMAGE_COLOR)
+  jpg_as_np = np.frombuffer(jpg_original, dtype=np.uint8)
+
+  img_np = cv2.imdecode(image, cv2.LOAD)
 
   # Convertendo pra grayscale
   gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
