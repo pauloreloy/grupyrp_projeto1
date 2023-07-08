@@ -2,6 +2,7 @@ import os
 import json
 import telebot
 import requests
+from detectFace import detectFace
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -18,17 +19,15 @@ def analisarFoto(message):
     fileID = message.photo[-1].file_id
     file_info = bot.get_file(fileID)
     downloaded_file = bot.download_file(file_info.file_path)
-    image_headers = { 
-        'content-type' : 'image/jpeg'
-    }
-    r = requests.post("https://vmhjsq4lvxdkk7367d7eryoyjq0iutiy.lambda-url.us-east-1.on.aws/",headers=image_headers, data=downloaded_file)
     try:
-        result = json.loads(r.text)
+        result = detectFace(downloaded_file)
+        result = json.loads(result)
         totalfaces = result['result']['totalfaces']
         totalsmiling = result['result']['smiling']
         msg = f"Total de Pessoas: {totalfaces}\nTotal Sorrindo: {totalsmiling}"
         bot.send_message(message.chat.id, msg, parse_mode="Markdown")
-    except:
+    except Exception as e:
+        print(e)
         bot.send_message(message.chat.id, "Erro ao analisar a foto.", parse_mode="Markdown")
 
 @bot.message_handler(func=lambda msg: True)
