@@ -34,4 +34,5 @@ def analisarFoto(message):
 def echo_all(message):
     bot.send_message(message.chat.id, "Função não reconhecida.")
 
+
 bot.infinity_polling()
