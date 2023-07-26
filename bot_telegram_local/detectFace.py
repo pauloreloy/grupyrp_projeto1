@@ -8,7 +8,7 @@ import json
 def detectFace(image, __name__ = None):
 
   # Carregando os modelos
-  face_cascade = cv2.CascadeClassifier('models/haarcascade_frontalface_default.xml')
+  face_cascade = cv2.CascadeClassifier('models/haarcascade_frontalface_alt.xml')
   smile_cascade = cv2.CascadeClassifier('models/haarcascade_smile.xml')
 
   #Lendo a imagem
@@ -21,23 +21,21 @@ def detectFace(image, __name__ = None):
   gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
   # Detectando as faces
-  faces = face_cascade.detectMultiScale(gray,1.1,3)
+  faces = face_cascade.detectMultiScale(gray,1.07,9)
 
-  # Detectando sorrisos
   totalsmiles = 0
   totalfaces = 0
   for (x, y, w, h) in faces:
-      retest_face = face_cascade.detectMultiScale(gray[y:y+h, x:x+w],1.1,5)
-      if(len(retest_face) > 0):
-        totalfaces = totalfaces + 1
-        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color = img[y:y+h, x:x+w]
-        smiles = smile_cascade.detectMultiScale(roi_gray, 1.2, 3)
-        if len(smiles) > 0:
-          totalsmiles = totalsmiles + 1
-          for (sx, sy, sw, sh) in smiles:
-             cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 1),
+      totalfaces = totalfaces + 1
+      cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+      roi_gray = gray[y:y+h, x:x+w]
+      roi_color = img[y:y+h, x:x+w]
+      # Detectando sorrisos
+      smiles = smile_cascade.detectMultiScale(roi_gray, 1.01, 6)
+      if len(smiles) > 0:
+        totalsmiles = totalsmiles + 1
+        for (sx, sy, sw, sh) in smiles:
+           cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 1),
 
   # Exibindo a Saida
   data = dict()
