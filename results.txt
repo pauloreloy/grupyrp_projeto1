@@ -1,0 +1,13 @@
+local:
+meeting1.jpg, 13, 10
+meeting2.jpg, 21, 4
+meeting3.jpg, 18, 15
+meeting4.jpg, 24, 24
+meeting5.jpg, 7, 7
+
+aws:
+meeting1.jpg, 12, 9
+meeting2.jpg, 27, 6
+meeting3.jpg, 20, 1
+meeting4.jpg, 26,24
+meeting5.jpg, 10, 1
